@@ -13,21 +13,29 @@ TRUNCATE TABLE fact_spotify_songs
 INSERT INTO fact_spotify_songs(
     original_key,   
     song_name,
-    artist_name 
+    artist_name,
+    energy_score,
+    added_date,
+    duration_seconds,
+    popularity_score
     )
 SELECT
 [key],
 [Song],
-[Artist]
+[Artist],
+[Energy],
+CONVERT(DATE,[Added_At],103),
+CAST( LEFT([Duration],CHARINDEX(':',[Duration])-1) AS INT )*60+
+CAST( SUBSTRING([Duration],CHARINDEX(':',[Duration])+1,2)   AS INT),
+[Popularity]
+
 FROM dbo.stg_spotify_playlist;
---[Energy],
---CONVERT(DATE,[Added_At],103),
+ 
 
 SELECT * FROM fact_spotify_songs;
 
 
+---SUBSTRING(cadena, inicio, longitud)
 
-
-);
 
 
